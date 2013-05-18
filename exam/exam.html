@@ -1,0 +1,72 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+    <link href="exam.css" rel="stylesheet" />
+    <script src="exam.js"></script>
+    <script src="repository.js"></script>
+    <script src="local-storage-extensions.js"></script>
+</head>
+<body>
+    <table id="grid-view-holder"></table>
+    <table id="schools-repo"></table>
+    <script>
+        //Task 1-3
+        var schoolGrid = controls.getGridView("#grid-view-holder");
+        schoolGrid.addHeader("Name", "Location", "Number of Courses", "Total students", "Speciality");
+        schoolGrid.addRow("PMG", "Burgas", 5, 400, "Math");
+
+        var tuesRow = schoolGrid.addRow("TUES", "Sofia", 8, 500, "IT");
+        var tuesGrid = tuesRow.getNestedGrid();
+        tuesGrid.addHeader("Title", "Start Date", "Total Students");
+        tuesGrid.addRow("JS 2", "11.02.2013", "400");
+        tuesGrid.addRow("JS 2", "11.02.2013", "400");
+        var jsrow = tuesGrid.addRow("JS 2", "11.02.2013", "400");
+        var jsgrid = jsrow.getNestedGrid();
+        jsgrid.addHeader("Title", "Start Date", "Total Students");
+
+
+        var academyRow = schoolGrid.addRow("Telerik Academy", "Burgas",15, 5000, "IT");
+        var academyGrid = academyRow.getNestedGrid();
+        academyGrid.addHeader("Title", "Start Date", "Total Students");
+        academyGrid.addRow("JS 2", "11.02.2013", "400");
+        academyGrid.addRow("JS 2", "11.02.2013", "400");
+        academyGrid.addRow("JS 2", "11.02.2013", "400");
+        schoolGrid.render();
+
+        //Task 4
+        var studentPesho = new Student("Pesho", "Petrov", 7);
+        var studentIvan = new Student("Ivan", "Ivanov", 6);
+        var setOfStudents = [];
+        setOfStudents.push(studentPesho);
+        setOfStudents.push(studentIvan);
+
+        var jsCourse = new Course("JS2", "1-1-2012", 2, setOfStudents);
+        var cSharpCourse = new Course("CSharp", "1-1-2012", 2, setOfStudents);
+        var setOfCourses = [];
+        setOfCourses.push(jsCourse);
+        setOfCourses.push(cSharpCourse);
+
+        var schoolTelerik = new School("Telerik Academy", "Sofia", 2, "IT", setOfCourses);
+        var schoolTUES = new School("TUES", "Sofia", 2, "IT", setOfCourses);
+        var schoolsData = [];
+        schoolsData.push(schoolTelerik);
+        schoolsData.push(schoolTUES);
+
+        // Test Task 4
+        schoolsRepository.save("schools-repository", schoolsData);
+        var data = schoolsRepository.load("schools-repository");
+        console.log(data[0]);
+
+        //Task 5 
+        var allSchoolsData = schoolGrid.getGridViewData();
+        schoolsRepository.save("all-data", allSchoolsData);
+        console.log(schoolsRepository.load("all-data"));
+
+        //task 6
+        var dataFromRepo = schoolsRepository.load("all-data");
+        controls.buildGridView("#schools-repo", dataFromRepo);
+
+    </script>
+</body>
+</html>
